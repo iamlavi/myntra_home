@@ -31,26 +31,32 @@
           <li class="nav-item me-1">
             <a class="nav-link active" aria-current="page" href="./t-shirt_collection.html">MEN</a>
           </li>
-          <li class="nav-item me-3">
+          <li class="nav-item me-1">
             <a class="nav-link" href="#">WOMEN</a>
           </li>
-          <li class="nav-item me-3">
+          <li class="nav-item me-1">
             <a class="nav-link" href="#">KIDS</a>
           </li>
 
-          <li class="nav-item me-3">
+          <li class="nav-item me-1">
             <a class="nav-link" href="#">BEAUTY</a>
           </li>
         </ul>
+        <button onclick="myFunction()" class="mx-1"><i class="fa fa-circle" aria-hidden="true"></i></button>
         <form class="d-flex" role="search">
           <input type="search" placeholder='  &#xF002;      Search for products and brand more'
             style="font-family:Arial, FontAwesome" aria-label="Search">
         </form>
-        <button onclick="myFunction()">Change mode</button>
+        <button onclick="geolocation()" class="mx-1"><i class="fa fa-cloud" aria-hidden="true"></i></button>
+        <p id="out"></p>
+        <p id="location"></p>
+        <p id="weather"></p>
+
+        
         <ul class="navbar-nav ms-auto mb-1 mb-lg-0">
           <li>
             <a class="nav-link" href="">
-              <div class="profile_logo me-3">
+              <div class="profile_logo me-1">
                 <i class="fa fa-user" aria-hidden="true"></i>
                 <p>Profile</p>
               </div>
@@ -58,7 +64,7 @@
           </li>
           <li>
             <a class="nav-link" href="">
-              <div class="profile_logo me-3">
+              <div class="profile_logo me-1">
                 <i class="fa fa-shopping-cart" aria-hidden="true"></i>
                 <p>Cart</p>
               </div>
@@ -66,7 +72,7 @@
           </li>
           <li>
             <a class="nav-link" href="">
-              <div class="profile_logo me-3">
+              <div class="profile_logo me-1">
                 <i class="fa fa-heart" aria-hidden="true"></i>
                 <p>Wishlist</p>
               </div>
@@ -74,7 +80,7 @@
           </li>
           <li>
             <a class="nav-link" href="">
-              <div class="profile_logo me-3">
+              <div class="profile_logo me-1">
                 <i class="fa fa-shopping-bag" aria-hidden="true"></i>
                 <p>Bag</p>
               </div>
@@ -357,6 +363,33 @@
       function myFunction() {
         let element = document.body;
         element.classList.toggle("dark-mode");
+      }
+
+      let x = document.getElementById('out');
+      let z = document.getElementById('location');
+      function geolocation() {
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(showPosition)
+        } else {
+          x.innerText = "Geo Not Supported"
+        }
+      }
+
+      function showPosition(data) {
+        console.log(data)
+        let lat = data.coords.latitude;
+        let long = data.coords.longitude;
+        // x.innerText = `Lat is ${lat} & long is ${long}`;
+        const url = `https://api.openweathermap.org/data/2.5/forecast/daily?lat=${lat}&lon=${long}&mode=json&units=metric&cnt=5&appid=fbf712a5a83d7305c3cda4ca8fe7ef29`;
+        //api calling
+        fetch(url, { method: 'GET' })
+          //return promise
+          .then((res) => res.json())
+          // resolve the promise
+          .then((data) => {
+            z.innerText = `${data.list[0].temp.day} °C`
+          })
+
       }
 
     </script>
